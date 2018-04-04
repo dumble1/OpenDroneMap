@@ -25,3 +25,10 @@ ceres-solver.tar.gz
 opencv.zip
 settings.yaml
 docker.settings.yaml
+
+
+
+*.obj
+*.ply
+*.png
+copy_vertex
