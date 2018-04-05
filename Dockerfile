@@ -47,13 +47,17 @@ COPY /SuperBuild/CMakeLists.txt /code/SuperBuild/CMakeLists.txt
 COPY docker.settings.yaml /code/settings.yaml
 COPY VERSION /code/VERSION
 
+###my code
+COPY /my_code/ /code/my_code/
 
 #Compile code in SuperBuild and root directories
 
-RUN cd SuperBuild && mkdir build && cd build && cmake  .. && make -j$(nproc)     && cd ../.. && mkdir build && cd build && cmake .. && make -j$(nproc)
+RUN cd SuperBuild && mkdir build && cd build && cmake  .. && make -j$(nproc) && cd ../.. && mkdir build && cd build && cmake .. && make -j$(nproc)
 
 RUN apt-get -y remove libgl1-mesa-dri git cmake python-pip build-essential
 RUN apt-get install -y libvtk6-dev
+######my code
+RUN cd my_code && make all
 
 # Cleanup APT
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 

@@ -46,4 +46,6 @@ if __name__ == '__main__':
     # execute the plasm
     plasm.execute(niter=1)
 
+    # run my_code.
+    os.system("cd " + args.project_path + "/my_code/ &&ls &&./main")
     log.ODM_INFO('OpenDroneMap app finished - %s' % system.now())
