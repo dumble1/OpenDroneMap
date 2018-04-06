@@ -3,11 +3,11 @@
 
 int main(){
   int check=0;
-  check = system("./copy_vertex");
+  check = system("/code/my_code/copy_vertex");
   if(check == -1){
     printf("error in copy_vertex!\n");
   }else{
-    check = system("python draw.py");
+    check = system("python /code/my_code/draw.py");
   }
   if(check==-1)
     printf("error in  draw.py");

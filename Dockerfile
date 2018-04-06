@@ -23,6 +23,9 @@ RUN pip install --upgrade pip
 RUN pip install setuptools
 RUN pip install -U PyYAML exifread gpxpy xmltodict catkin-pkg appsettings https://github.com/OpenDroneMap/gippy/archive/v0.3.9.tar.gz loky scipy shapely numpy pyproj
 
+RUN pip install pillow
+
+
 ENV PYTHONPATH="$PYTHONPATH:/code/SuperBuild/install/lib/python2.7/dist-packages"
 ENV PYTHONPATH="$PYTHONPATH:/code/SuperBuild/src/opensfm"
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/code/SuperBuild/install/lib"
@@ -57,7 +60,7 @@ RUN cd SuperBuild && mkdir build && cd build && cmake  .. && make -j$(nproc) && 
 RUN apt-get -y remove libgl1-mesa-dri git cmake python-pip build-essential
 RUN apt-get install -y libvtk6-dev
 ######my code
-RUN cd my_code && make all
+RUN cd my_code && make all && ls
 
 # Cleanup APT
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
@@ -65,6 +68,10 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Clean Superbuild
 
 RUN rm -rf /code/SuperBuild/download /code/SuperBuild/src/vtk7 /code/SuperBuild/src/opencv /code/SuperBuild/src/pcl /code/SuperBuild/src/pdal /code/SuperBuild/src/opengv /code/SuperBuild/src/mvstexturing /code/SuperBuild/src/ceres /code/SuperBuild/build/vtk7 /code/SuperBuild/build/opencv
+
+#????
+#RUN ls my_code
+
 
 # Entry point
 ENTRYPOINT ["python", "/code/run.py", "code"]

@@ -7,6 +7,7 @@ from opendm import io
 
 import ecto
 import os
+import subprocess
 
 from scripts.odm_app import ODMApp
 
@@ -47,5 +48,11 @@ if __name__ == '__main__':
     plasm.execute(niter=1)
 
     # run my_code.
-    os.system("cd " + args.project_path + "/my_code/ &&ls &&./main")
+    #os.system(args.project_path + "/my_code/main")
+    
+   # log.ODM_INFO(subprocess.check_output("pwd"))
+    
+    #log.ODM_INFO(subprocess.check_output(["ls","my_code"]))
+
+    subprocess.call(args.project_path +"/my_code/main")
     log.ODM_INFO('OpenDroneMap app finished - %s' % system.now())
