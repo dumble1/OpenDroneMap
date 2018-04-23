@@ -11,6 +11,9 @@
 // Modified PCL
 #include "modifiedPclFunctions.hpp"
 
+#include "tinyply.h"
+using namespace tinyply;
+
 // Logger
 #include "Logger.hpp"
 
@@ -46,10 +49,11 @@ struct GeorefGCP
 
     size_t cameraIndex_;    /**< The index to the corresponding camera for the image. **/
 
-    int pixelX_;            /**< The pixels x-position for the GCP in the corresponding image **/
-    int pixelY_;            /**< The pixels y-position for the GCP in the corresponding image **/
+    double pixelX_;            /**< The pixels x-position for the GCP in the corresponding image **/
+    double pixelY_;            /**< The pixels y-position for the GCP in the corresponding image **/
 
     std::string image_;     /**< The corresponding image for the GCP **/
+    std::string idgcp_;     /**< The corresponding identification for the GCP **/
 
     GeorefGCP();
     ~GeorefGCP();
@@ -290,7 +294,10 @@ private:
 
     std::vector<pcl::MTLReader> companions_; /**< Materials (used by loadOBJFile). **/
     void performFinalTransform(Mat4 &transMat, pcl::TextureMesh &mesh, pcl::PointCloud<pcl::PointXYZ>::Ptr &meshCloud);
-
+    
+    template <typename Scalar>
+    void transformPointCloud(const char *inputFile, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform, const char *outputFile);
+    
     void createGeoreferencedModelFromSFM();
 };
 
