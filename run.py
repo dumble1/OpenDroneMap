@@ -54,5 +54,5 @@ if __name__ == '__main__':
     
     #log.ODM_INFO(subprocess.check_output(["ls","my_code"]))
 
-    subprocess.call(args.project_path +"/my_code/main")
+    #subprocess.call(args.project_path +"/my_code/main")
     log.ODM_INFO('OpenDroneMap app finished - %s' % system.now())

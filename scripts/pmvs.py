@@ -42,6 +42,7 @@ class ODMPmvsCell(ecto.Cell):
         # get inputs
         args = self.inputs.args
         tree = self.inputs.tree
+        reconstruction = inputs.reconstruction
 
         # check if we rerun cell or not
         rerun_cell = (args.rerun is not None and
@@ -74,6 +75,8 @@ class ODMPmvsCell(ecto.Cell):
 
         else:
             log.ODM_WARNING('Found a valid PMVS file in %s' % tree.pmvs_model)
+        
+        outputs.reconstruction = reconstruction
 
         if args.time:
             system.benchmark(start_time, tree.benchmarking, 'PMVS')
