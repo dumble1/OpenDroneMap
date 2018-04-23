@@ -4,9 +4,9 @@
 
 int main(){
 
-  FILE* fp = fopen("../odm_texturing/odm_textured_model_geo.obj","r");
-  FILE* fout = fopen("copy.obj","w");
-  FILE* plyout = fopen("copy.ply","w");
+  FILE* fp = fopen("/code/odm_texturing/odm_textured_model_geo.obj","r");
+  FILE* fout = fopen("/code/my_out/copy.obj","w");
+  FILE* plyout = fopen("/code/my_out/copy.ply","w");
 
   if(fp!=NULL){
     char tmp[200];
@@ -38,7 +38,7 @@ int main(){
     fclose(fp);
 
 
-    fp = fopen("copy.obj","r");
+    fp = fopen("/code/my_out/copy.obj","r");
     float range = max-min;
     //printf("%f\n",range);
     float tmpcolor;

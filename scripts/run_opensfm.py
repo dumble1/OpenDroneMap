@@ -76,9 +76,11 @@ class ODMOpenSfMCell(ecto.Cell):
                 "feature_min_frames: %s" % self.params.feature_min_frames,
                 "processes: %s" % self.params.processes,
                 "matching_gps_neighbors: %s" % self.params.matching_gps_neighbors,
-                # "depthmap_resolution: 2560",
-                # "depthmap_min_patch_sd: 4.0",
-                # "depthmap_min_consistent_views: 3",
+                
+                #"depthmap_resolution: 2560",
+                #"depthmap_min_patch_sd: 4.0",
+                #"depthmap_min_consistent_views: 3",
+                
                 "optimize_camera_parameters: %s" % ('no' if self.params.fixed_camera_params else 'yes')
             ]
 
@@ -153,6 +155,11 @@ class ODMOpenSfMCell(ecto.Cell):
                 system.run('PYTHONPATH=%s %s/bin/opensfm undistort %s' %
                            (context.pyopencv_path, context.opensfm_path, tree.opensfm))
                 
+                #make mvs file for openmvs.
+                system.run('PYTHONPATH=%s %s/bin/opensfm export_openmvs %s' %
+                          (context.pyopencv_path, context.opensfm_path, tree.opensfm))
+
+ 
                 # Skip dense reconstruction if necessary and export
                 # sparse reconstruction instead
                 if args.fast_orthophoto:
@@ -183,6 +190,7 @@ class ODMOpenSfMCell(ecto.Cell):
                            (context.pyopencv_path, context.opensfm_path, tree.opensfm, tree.pmvs))
             else:
                 log.ODM_WARNING('Found a valid CMVS file in: %s' % tree.pmvs_visdat)
+
 
         if reconstruction.georef:
             system.run('PYTHONPATH=%s %s/bin/opensfm export_geocoords %s --transformation --proj \'%s\'' %

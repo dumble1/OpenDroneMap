@@ -30,6 +30,7 @@ class ODMCmvsCell(ecto.Cell):
         # get inputs 
         args = self.inputs.args
         tree = self.inputs.tree
+        reconstruction = self.inputs.reconstruction 
 
         # check if we rerun cell or not
         rerun_cell = (args.rerun is not None and
@@ -58,6 +59,8 @@ class ODMCmvsCell(ecto.Cell):
         else:
             log.ODM_WARNING('Found a valid CMVS file in: %s' % 
                             tree.pmvs_bundle)
+        
+        outputs.reconstruction = reconstruction
 
         if args.time:
             system.benchmark(start_time, tree.benchmarking, 'CMVS')

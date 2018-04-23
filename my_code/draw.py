@@ -2,11 +2,28 @@ from PIL import Image
 from scipy import interpolate
 import numpy as np
 
-width = 5029
-height =6040
+fsize = open("/code/odm_orthophoto/odm_orthophoto_log.txt",'r')
+
+while True:
+    line =fsize.readline()
+    if not line:
+        break
+    if ":" in line:
+        linearr = line.split(':', 2)
+        if "resolution, " in linearr[0]:
+            size = linearr[1].split('x',2)
+            width  = int(size[0])
+            height = int(size[1])
+            break
+    else :
+        continue
+
+if width==0 or height==0:
+    print("Error: Invalid size!!\n")
+
 img = Image.new('RGB', (width,height),"black")
-f = open("copy.ply",'r')
-fp = open("copy.ply",'r')
+f = open("/code/my_out/copy.ply",'r')
+fp = open("/code/my_out/copy.ply",'r')
 #img.show()
 
 pixels = img.load()
@@ -105,6 +122,6 @@ for i in range(height):
     for j in range(width):
         pixels[j,height-i-1] = (int(rf[j][i]) , int(gf[j][i]), int(bf[j][i]))
 
-img.save("dem_mesh.png")
+img.save("/code/my_out/dem_mesh.png")
 f.close()
 fp.close()
