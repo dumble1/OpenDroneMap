@@ -32,3 +32,4 @@ docker.settings.yaml
 *.ply
 *.png
 copy_vertex
+testDocker*

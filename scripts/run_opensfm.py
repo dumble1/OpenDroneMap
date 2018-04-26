@@ -42,6 +42,7 @@ class ODMOpenSfMCell(ecto.Cell):
 
         # create working directories     
         system.mkdir_p(tree.opensfm)
+        system.mkdir_p(tree.openmvs)                    ########
         system.mkdir_p(tree.pmvs)
 
         # check if we rerun cell or not
@@ -51,7 +52,7 @@ class ODMOpenSfMCell(ecto.Cell):
                      (args.rerun_from is not None and
                       'opensfm' in args.rerun_from)
 
-        if not args.use_pmvs:
+        if not args.use_pmvs and not args.use_openmvs :
             output_file = tree.opensfm_model
             if args.fast_orthophoto:
                 output_file = io.join_paths(tree.opensfm, 'reconstruction.ply')
@@ -144,7 +145,7 @@ class ODMOpenSfMCell(ecto.Cell):
                 log.ODM_WARNING('Found a valid OpenSfM meshed reconstruction file in: %s' %
                                 tree.opensfm_reconstruction_meshed)
 
-            if not args.use_pmvs:
+            if not args.use_pmvs and not args.use_openmvs:
                 if not io.file_exists(tree.opensfm_reconstruction_nvm) or rerun_cell:
                     system.run('PYTHONPATH=%s %s/bin/opensfm export_visualsfm %s' %
                                (context.pyopencv_path, context.opensfm_path, tree.opensfm))
@@ -154,12 +155,7 @@ class ODMOpenSfMCell(ecto.Cell):
 
                 system.run('PYTHONPATH=%s %s/bin/opensfm undistort %s' %
                            (context.pyopencv_path, context.opensfm_path, tree.opensfm))
-                
-                #make mvs file for openmvs.
-                system.run('PYTHONPATH=%s %s/bin/opensfm export_openmvs %s' %
-                          (context.pyopencv_path, context.opensfm_path, tree.opensfm))
-
- 
+               
                 # Skip dense reconstruction if necessary and export
                 # sparse reconstruction instead
                 if args.fast_orthophoto:
@@ -190,6 +186,12 @@ class ODMOpenSfMCell(ecto.Cell):
                            (context.pyopencv_path, context.opensfm_path, tree.opensfm, tree.pmvs))
             else:
                 log.ODM_WARNING('Found a valid CMVS file in: %s' % tree.pmvs_visdat)
+        if args.use_openmvs:
+            if not io.file_exists(tree.openmvs_visdat) or rerun_cell:
+                #make mvs file for openmvs.
+                system.run('PYTHONPATH=%s %s/bin/opensfm export_openmvs %s' %
+                          (context.pyopencv_path, context.opensfm_path, tree.opensfm))
+
 
 
         if reconstruction.georef:

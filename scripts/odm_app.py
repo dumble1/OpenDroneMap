@@ -17,6 +17,8 @@ from odm_georeferencing import ODMGeoreferencingCell
 from odm_orthophoto import ODMOrthoPhotoCell
 from odm_dem import ODMDEMCell
 
+from openmvs import ODMOpenMVSCell
+
 
 class ODMApp(ecto.BlackBox):
     """ODMApp - a class for ODM Activities
@@ -50,6 +52,7 @@ class ODMApp(ecto.BlackBox):
                                            fixed_camera_params=p.args.use_fixed_camera_params,
                                            hybrid_bundle_adjustment=p.args.use_hybrid_bundle_adjustment),
                  'slam': ODMSlamCell(),
+                 'openmvs':ODMOpenMVSCell(),                ###OpenMVS
                  'cmvs': ODMCmvsCell(max_images=p.args.cmvs_maxImages),
                  'pmvs': ODMPmvsCell(level=p.args.pmvs_level,
                                      csize=p.args.pmvs_csize,
@@ -121,6 +124,19 @@ class ODMApp(ecto.BlackBox):
             connections += [self.tree[:] >> self.meshing['tree'],
                             self.args[:] >> self.meshing['args'],
                             self.opensfm['reconstruction'] >> self.meshing['reconstruction']]
+          
+
+
+        elif p.args.use_openmvs :
+            # run openmvs
+            connections += [self.tree[:] >> self.openmvs['tree'],
+                            self.args[:] >> self.openmvs['args'],
+                            self.opensfm['reconstruction'] >> self.openmvs['reconstruction']]
+            # create odm mesh from openmvs point cloud
+            connections += [self.tree[:] >> self.meshing['tree'],
+                            self.args[:] >> self.meshing['args'],
+                            self.openmvs['reconstruction'] >> self.meshing['reconstruction']]
+        
         else:
             # run cmvs
             connections += [self.tree[:] >> self.cmvs['tree'],

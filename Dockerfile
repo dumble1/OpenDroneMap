@@ -11,8 +11,17 @@ RUN add-apt-repository -y ppa:ubuntugis/ppa
 RUN add-apt-repository -y ppa:george-edison55/cmake-3.x
 RUN apt-get update -y
 
+
+###openMVS
+RUN apt-get update -y
+RUN apt-get install --fix-missing -y \
+mercurial libglu1-mesa-dev \
+libboost-program-options-dev libboost-system-dev libboost-serialization-dev \
+libcgal-dev libcgal-qt5-dev
+
+
 # All packages (Will install much faster)
-RUN apt-get install --no-install-recommends -y git cmake python-pip build-essential software-properties-common python-software-properties libgdal-dev gdal-bin libgeotiff-dev \
+RUN apt-get install --no-install-recommends -y  git cmake python-pip build-essential software-properties-common python-software-properties libgdal-dev gdal-bin libgeotiff-dev \
 libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libflann-dev \
 libproj-dev libxext-dev liblapack-dev libeigen3-dev libvtk6-dev python-networkx libgoogle-glog-dev libsuitesparse-dev libboost-filesystem-dev libboost-iostreams-dev \
 libboost-regex-dev libboost-python-dev libboost-date-time-dev libboost-thread-dev python-pyproj python-empy python-nose python-pyside python-pyexiv2 python-scipy \
@@ -23,7 +32,8 @@ RUN pip install --upgrade pip
 RUN pip install setuptools
 RUN pip install -U PyYAML exifread gpxpy xmltodict catkin-pkg appsettings https://github.com/OpenDroneMap/gippy/archive/v0.3.9.tar.gz loky scipy shapely numpy pyproj psutil
 
-RUN pip install pillow
+
+#RUN pip install pillow
 
 
 ENV PYTHONPATH="$PYTHONPATH:/code/SuperBuild/install/lib/python2.7/dist-packages"
@@ -34,6 +44,15 @@ ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/code/SuperBuild/install/lib"
 
 RUN mkdir /code
 WORKDIR /code
+
+##VCG for openMVS
+RUN git clone https://github.com/cdcseacave/VCG.git vcglib
+##openMVS
+RUN git clone https://github.com/cdcseacave/openMVS.git openMVS
+RUN mkdir openMVS_build && cd openMVS_build
+RUN cmake . ../openMVS -DCMAKE_BUILD_TYPE=Release -DVCG_DIR="/code/vcglib"
+
+#RUN mkdir /code/test
 
 # Copy repository files
 COPY ccd_defs_check.py /code/ccd_defs_check.py
@@ -74,5 +93,6 @@ RUN rm -rf /code/SuperBuild/download /code/SuperBuild/src/vtk7 /code/SuperBuild/
 
 
 # Entry point
-ENTRYPOINT ["python", "/code/run.py", "code"]
 
+ENTRYPOINT ["/code/run.py", "/code"]
+#ENTRYPOINT ["/code/scripts/metadataset/run_all.sh", "/code/test"]

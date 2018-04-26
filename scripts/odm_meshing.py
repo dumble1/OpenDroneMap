@@ -53,6 +53,11 @@ class ODMeshingCell(ecto.Cell):
         infile = tree.opensfm_model
         if args.use_pmvs:
           infile = tree.pmvs_model
+        
+      ######
+        elif args.use_openmvs:
+          infile = tree.openmvs_model
+        
         elif args.fast_orthophoto:
           infile = os.path.join(tree.opensfm, 'reconstruction.ply')
 
