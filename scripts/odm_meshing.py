@@ -55,8 +55,8 @@ class ODMeshingCell(ecto.Cell):
           infile = tree.pmvs_model
         
       ######
-        elif args.use_openmvs:
-          infile = tree.openmvs_model
+       #elif args.use_openmvs:
+       #infile = tree.openmvs_model
         
         elif args.fast_orthophoto:
           infile = os.path.join(tree.opensfm, 'reconstruction.ply')
@@ -65,6 +65,7 @@ class ODMeshingCell(ecto.Cell):
         if not args.fast_orthophoto:
           if not io.file_exists(tree.odm_mesh) or rerun_cell:
               log.ODM_DEBUG('Writing ODM Mesh file in: %s' % tree.odm_mesh)
+              log.ODM_DEBUG('My mvs point cloud: %s' % infile)
 
               kwargs = {
                   'bin': context.odm_modules_path,

@@ -7,9 +7,8 @@ from appsettings import SettingsParser
 import sys
 
 # parse arguments
-processopts = ['dataset', 'opensfm', 'slam', 'cmvs', 'pmvs',
-               'odm_meshing', 'odm_25dmeshing', 'mvs_texturing', 'odm_georeferencing',
-               'odm_dem', 'odm_orthophoto', 'openmvs']
+processopts = ['dataset', 'opensfm','openmvs', 'slam', 'cmvs', 'pmvs','odm_meshing', 'odm_25dmeshing', 'mvs_texturing', 'odm_georeferencing',
+               'odm_dem', 'odm_orthophoto']
 
 with open(io.join_paths(context.root_path, 'VERSION')) as version_file:
     __version__ = version_file.read().strip()
@@ -157,10 +156,11 @@ def config():
                     action='store_true',
                     default=False,
                     help='Use a 2.5D mesh to compute the orthophoto. This option tends to provide better results for planar surfaces. Experimental.')
-
+#####3################################3333
     parser.add_argument('--use-openmvs',
                     action='store_true',
                     default=False)
+#####################################
     parser.add_argument('--use-pmvs',
                         action='store_true',
                         default=False,

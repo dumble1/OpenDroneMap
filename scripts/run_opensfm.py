@@ -180,14 +180,21 @@ class ODMOpenSfMCell(ecto.Cell):
 
         if args.use_pmvs:
             # check if reconstruction was exported to pmvs before
+            
             if not io.file_exists(tree.pmvs_visdat) or rerun_cell:
                 # run PMVS converter
                 system.run('PYTHONPATH=%s %s/bin/export_pmvs %s --output %s' %
                            (context.pyopencv_path, context.opensfm_path, tree.opensfm, tree.pmvs))
             else:
                 log.ODM_WARNING('Found a valid CMVS file in: %s' % tree.pmvs_visdat)
+        
         if args.use_openmvs:
-            if not io.file_exists(tree.openmvs_visdat) or rerun_cell:
+            
+            system.run('PYTHONPATH=%s %s/bin/opensfm undistort %s' %
+                        (context.pyopencv_path, context.opensfm_path, tree.opensfm))
+               
+
+            if not io.file_exists(tree.opensfm_scene) or rerun_cell:
                 #make mvs file for openmvs.
                 system.run('PYTHONPATH=%s %s/bin/opensfm export_openmvs %s' %
                           (context.pyopencv_path, context.opensfm_path, tree.opensfm))

@@ -5,14 +5,14 @@ from opendm import log
 from opendm import system
 from opendm import context
 
-class ODMopenMVSCell(ecto.Cell):
+class ODMOpenMVSCell(ecto.Cell):
 
     def declare_params(self, params):
         params.declare("cores", 'The maximum number of cores to use '
                                 'in dense reconstruction.', context.num_cores) 
     def declare_io(self, params, inputs, outputs):
         inputs.declare("tree", "Struct with paths", [])
-        intuts.declare("args", "Struct with paths", [])
+        inputs.declare("args", "Struct with paths", [])
         inputs.declare("reconstruction", "list of ODMReconstructions", [])
         outputs.declare("reconstruction", "list of ODMReconstructions", [])
 
@@ -21,7 +21,7 @@ class ODMopenMVSCell(ecto.Cell):
         # Benchmarking
         start_time = system.now_raw()
 
-        log.ODM_INFO('Running ODM CMVS Cell')
+        log.ODM_INFO('Running ODM OpenMVS Cell')
 
         # get inputs
         args = self.inputs.args
@@ -35,25 +35,34 @@ class ODMopenMVSCell(ecto.Cell):
                      (args.rerun_from is not None and
                       'openmvs' in args.rerun_from)
 
-        if not io.file_exists(tree.openmvs_bundle) or rerun_cell:
-            log.ODM_DEBUG('Writing CMVS vis in: %s' % tree.openmvs_bundle)
+        if not io.file_exists(tree.openmvs_model) or rerun_cell:
+            log.ODM_DEBUG('Writing OpenMVS vis in: %s' % tree.openmvs_model_data)
 
             #copy bundle file to openmvs dir
             from shutil import copyfile
-            copyfile(tree.opensfm_bundle,
-                     tree.openmvs_bundle)
+            copyfile(tree.opensfm_scene,
+                     tree.openmvs_scene)
 
-            kwargs = {
-                    'bin': context.openmvs_path,
-                    'prefix': self.inputs.tree.opensfm_rec_path,
-                    'cores' : self.params.cores
-                    }
-            # run openmvs
-            system.run('{bin} {prefix}/openmvs/scene.mvs  {cores}'.format(**kwargs))
-
+            system.run('%s %s' % (context.openmvs_densify_path, tree.openmvs_scene))
+        
         else:
-            log.ODM_WARNING('Found a valid CMVS file in: %s' %
-                            tree.openmvs_bundle)
+            log.ODM_WARNING('Found a valid OpenMVS file in: %s' %
+                            tree.openmvs_model)
+        
+        ###Reconstruct
+        if not io.file_exists(tree.openmvs_tex_scene):
+            log.ODM_DEBUG('Reconstruct Mesh')
+            system.run('%s %s' % (context.openmvs_meshing_path, tree.openmvs_dense_scene))
+        else:
+            log.ODM_WARNING('Found a valid file in: %s' % tree.openmvs_tex_scene)
+        
+        ###Texturing
+        if not io.file_exists(tree.scene_dense_mesh_texture):
+            log.ODM_DEBUG('Texturing Mesh')
+            system.run('%s %s' % (context.openmvs_tex_path, tree.openmvs_tex_scene))
+
+
+
 
         outputs.reconstruction = reconstruction
 

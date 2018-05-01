@@ -46,12 +46,18 @@ class ODMGeoreferencingCell(ecto.Cell):
                      (args.rerun_all) or \
                      (args.rerun_from is not None and
                       'odm_georeferencing' in args.rerun_from)
-
-        runs = [{
-            'georeferencing_dir': tree.odm_georeferencing,
-            'texturing_dir': tree.odm_texturing,
-            'model': os.path.join(tree.odm_texturing, tree.odm_textured_model_obj)
-        }]
+        if not args.use_openmvs: 
+            runs = [{
+                'georeferencing_dir': tree.odm_georeferencing,
+                'texturing_dir': tree.odm_texturing,
+                'model': os.path.join(tree.odm_texturing, tree.odm_textured_model_obj)
+            }]
+        else :
+            runs = [{
+                'georeferencing_dir':tree.odm_georeferencing,
+                'texturing_dir' : tree.openmvs,
+                'model': tree.openmvs_tex_model
+                }]
 
         if args.fast_orthophoto:
             runs = []
@@ -93,6 +99,8 @@ class ODMGeoreferencingCell(ecto.Cell):
                 if not args.use_pmvs:
                     if args.fast_orthophoto:
                         kwargs['pc'] = os.path.join(tree.opensfm, 'reconstruction.ply')
+                    elif args.use_openmvs:
+                        kwargs['pc'] = tree.openmvs_model
                     else:
                         kwargs['pc'] = tree.opensfm_model
                 else:

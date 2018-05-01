@@ -119,49 +119,50 @@ class ODMApp(ecto.BlackBox):
                         self.args[:] >> self.opensfm['args'],
                         self.dataset['reconstruction'] >> self.opensfm['reconstruction']]
 
-        if not p.args.use_pmvs:
+        if (not p.args.use_pmvs) and (not p.args.use_openmvs):
             # create odm mesh from opensfm point cloud
             connections += [self.tree[:] >> self.meshing['tree'],
                             self.args[:] >> self.meshing['args'],
                             self.opensfm['reconstruction'] >> self.meshing['reconstruction']]
           
-
-
-        elif p.args.use_openmvs :
-            # run openmvs
-            connections += [self.tree[:] >> self.openmvs['tree'],
-                            self.args[:] >> self.openmvs['args'],
-                            self.opensfm['reconstruction'] >> self.openmvs['reconstruction']]
-            # create odm mesh from openmvs point cloud
-            connections += [self.tree[:] >> self.meshing['tree'],
-                            self.args[:] >> self.meshing['args'],
-                            self.openmvs['reconstruction'] >> self.meshing['reconstruction']]
-        
         else:
-            # run cmvs
-            connections += [self.tree[:] >> self.cmvs['tree'],
-                            self.args[:] >> self.cmvs['args'],
-                            self.opensfm['reconstruction'] >> self.cmvs['reconstruction']]
+
+            if p.args.use_openmvs :
+            # run openmvs
+                connections += [self.tree[:] >> self.openmvs['tree'],
+                                self.args[:] >> self.openmvs['args'],
+                                self.opensfm['reconstruction'] >> self.openmvs['reconstruction']]
+            # create odm mesh from openmvs point cloud
+                connections += [self.tree[:] >> self.georeferencing['tree'],
+                                self.args[:] >> self.georeferencing['args'],
+                                self.openmvs['reconstruction'] >> self.georeferencing['reconstruction']]
+        
+            else:
+                # run cmvs
+                connections += [self.tree[:] >> self.cmvs['tree'],
+                                self.args[:] >> self.cmvs['args'],
+                                self.opensfm['reconstruction'] >> self.cmvs['reconstruction']]
 
             # run pmvs
-            connections += [self.tree[:] >> self.pmvs['tree'],
-                            self.args[:] >> self.pmvs['args'],
-                            self.cmvs['reconstruction'] >> self.pmvs['reconstruction']]
+                connections += [self.tree[:] >> self.pmvs['tree'],
+                                self.args[:] >> self.pmvs['args'],
+                                self.cmvs['reconstruction'] >> self.pmvs['reconstruction']]
 
             # create odm mesh from pmvs point cloud
-            connections += [self.tree[:] >> self.meshing['tree'],
-                            self.args[:] >> self.meshing['args'],
-                            self.pmvs['reconstruction'] >> self.meshing['reconstruction']]
+                connections += [self.tree[:] >> self.meshing['tree'],
+                                self.args[:] >> self.meshing['args'],
+                                self.pmvs['reconstruction'] >> self.meshing['reconstruction']]
+        
+        if not p.args.use_openmvs :
+            # create odm texture
+            connections += [self.tree[:] >> self.texturing['tree'],
+                            self.args[:] >> self.texturing['args'],
+                            self.meshing['reconstruction'] >> self.texturing['reconstruction']]
 
-        # create odm texture
-        connections += [self.tree[:] >> self.texturing['tree'],
-                        self.args[:] >> self.texturing['args'],
-                        self.meshing['reconstruction'] >> self.texturing['reconstruction']]
-
-        # create odm georeference
-        connections += [self.tree[:] >> self.georeferencing['tree'],
-                        self.args[:] >> self.georeferencing['args'],
-                        self.texturing['reconstruction'] >> self.georeferencing['reconstruction']]
+            # create odm georeference
+            connections += [self.tree[:] >> self.georeferencing['tree'],
+                            self.args[:] >> self.georeferencing['args'],
+                            self.texturing['reconstruction'] >> self.georeferencing['reconstruction']]
 
         # create odm dem
         connections += [self.tree[:] >> self.dem['tree'],

@@ -24,7 +24,9 @@ ccd_widths_path = os.path.join(opensfm_path, 'opensfm/data/sensor_data.json')
 orb_slam2_path = os.path.join(superbuild_path, "src/orb_slam2")
 
 # define openmvs path
-openmvs_path = os.path.join(root_path, "openMVS_build/bin/DensifyPointCloud")
+openmvs_densify_path = os.path.join(root_path, "openMVS_build/bin/DensifyPointCloud")
+openmvs_meshing_path = os.path.join(root_path, "openMVS_build/bin/ReconstructMesh")
+openmvs_tex_path = os.path.join(root_path, "openMVS_build/bin/TextureMesh")
 
 # define pmvs path
 cmvs_path = os.path.join(superbuild_path, "install/bin/cmvs")

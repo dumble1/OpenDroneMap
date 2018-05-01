@@ -407,6 +407,8 @@ class ODM_Tree(object):
         self.odm_25dgeoreferencing = io.join_paths(self.root_path, 'odm_25dgeoreferencing')
         self.odm_orthophoto = io.join_paths(self.root_path, 'odm_orthophoto')
         self.odm_pdal = io.join_paths(self.root_path, 'pdal')
+        #################
+        self.openmvs = io.join_paths(self.root_path, 'openmvs')
 
         # important files paths
 
@@ -423,7 +425,17 @@ class ODM_Tree(object):
         self.opensfm_reconstruction_meshed = io.join_paths(self.opensfm, 'reconstruction.meshed.json')
         self.opensfm_reconstruction_nvm = io.join_paths(self.opensfm, 'reconstruction.nvm')
         self.opensfm_model = io.join_paths(self.opensfm, 'depthmaps/merged.ply')
-        self.opensfm_transformation = io.join_paths(self.opensfm, 'geocoords_transformation.txt')
+        self.opensfm_transformation = io.join_paths(self.opensfm, 'geocoords_transformation.txt') 
+        self.opensfm_scene = io.join_paths(self.opensfm, 'openmvs/scene.mvs')
+        
+        #openmvs
+        self.openmvs_scene = io.join_paths(self.openmvs, 'scene.mvs')
+
+        self.openmvs_model = io.join_paths(self.openmvs, 'scene_dense.ply')
+        self.openmvs_dense_scene = io.join_paths(self.openmvs, 'scene_dense.mvs')
+        self.openmvs_tex_scene = io.join_paths(self.openmvs, 'scene_dense_mesh.mvs')
+        self.openmvs_tex_model = io.join_paths(self.openmvs, 'scene_dense_mesh.obj')
+
 
         # pmvs
         self.pmvs_rec_path = io.join_paths(self.pmvs, 'recon0')

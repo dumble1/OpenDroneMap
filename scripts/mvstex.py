@@ -46,12 +46,13 @@ class ODMMvsTexCell(ecto.Cell):
                      (args.rerun_all) or \
                      (args.rerun_from is not None and
                       'mvs_texturing' in args.rerun_from)
-
+        
+        
         runs = [{
             'out_dir': tree.odm_texturing,
             'model': tree.odm_mesh,
             'force_skip_vis_test': False
-        }]
+           }]
 
         if args.fast_orthophoto:
             runs = []
@@ -68,7 +69,6 @@ class ODMMvsTexCell(ecto.Cell):
                     # and while one vertex might be occluded, the other two might not.
                     'force_skip_vis_test': True 
                 }]
-
         for r in runs:
             odm_textured_model_obj = os.path.join(r['out_dir'], tree.odm_textured_model_obj)
 
