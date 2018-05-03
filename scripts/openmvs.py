@@ -36,7 +36,7 @@ class ODMOpenMVSCell(ecto.Cell):
                       'openmvs' in args.rerun_from)
 
         if not io.file_exists(tree.openmvs_model) or rerun_cell:
-            log.ODM_DEBUG('Writing OpenMVS vis in: %s' % tree.openmvs_model_data)
+            log.ODM_DEBUG('Writing OpenMVS vis in: %s' % tree.openmvs_dense_scene)
 
             #copy bundle file to openmvs dir
             from shutil import copyfile
@@ -44,23 +44,29 @@ class ODMOpenMVSCell(ecto.Cell):
                      tree.openmvs_scene)
 
             system.run('%s %s' % (context.openmvs_densify_path, tree.openmvs_scene))
-        
+            system.run('chmod 744 %s' % tree.openmvs_model)
         else:
             log.ODM_WARNING('Found a valid OpenMVS file in: %s' %
                             tree.openmvs_model)
         
         ###Reconstruct
-        if not io.file_exists(tree.openmvs_tex_scene):
+        if not io.file_exists(tree.openmvs_dense_mesh_model) or rerun_cell:
             log.ODM_DEBUG('Reconstruct Mesh')
+            
             system.run('%s %s' % (context.openmvs_meshing_path, tree.openmvs_dense_scene))
+            system.run('chmod 744 %s' % tree.openmvs_dense_mesh_model)
         else:
-            log.ODM_WARNING('Found a valid file in: %s' % tree.openmvs_tex_scene)
+            log.ODM_WARNING('Found a valid file in: %s' % tree.openmvs_dense_mesh_model)
         
         ###Texturing
-        if not io.file_exists(tree.scene_dense_mesh_texture):
+        if not io.file_exists(tree.openmvs_tex_model) or rerun_cell:
             log.ODM_DEBUG('Texturing Mesh')
-            system.run('%s %s' % (context.openmvs_tex_path, tree.openmvs_tex_scene))
 
+            system.run('%s %s --export-type obj' % (context.openmvs_tex_path, tree.openmvs_dense_mesh_scene))
+            system.run('chmod 744 %s' % tree.openmvs_tex_model)
+
+        else:
+            log.ODM_WARNING('Found a valid file in: %s' % tree.openmvs_tex_model)
 
 
 

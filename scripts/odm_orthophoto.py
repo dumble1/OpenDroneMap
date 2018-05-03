@@ -63,11 +63,15 @@ class ODMOrthoPhotoCell(ecto.Cell):
             if reconstruction.georef:  # io.file_exists(tree.odm_georeferencing_coords):
                 if args.use_25dmesh:
                     kwargs['model_geo'] = os.path.join(tree.odm_25dtexturing, tree.odm_georeferencing_model_obj_geo)
+                elif args.use_openmvs:
+                    kwargs['model_geo'] = os.path.join(tree.openmvs, tree.odm_georeferencing_model_obj_geo)
                 else:
                     kwargs['model_geo'] = os.path.join(tree.odm_texturing, tree.odm_georeferencing_model_obj_geo)
             else:
                 if args.use_25dmesh:
                     kwargs['model_geo'] = os.path.join(tree.odm_25dtexturing, tree.odm_textured_model_obj)
+                elif args.use_openmvs:
+                    kwargs['model_geo'] = os.path.join(tree.openmvs, tree.openmvs_tex_model)
                 else:
                     kwargs['model_geo'] = os.path.join(tree.odm_texturing, tree.odm_textured_model_obj)
 

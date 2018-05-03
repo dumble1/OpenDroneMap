@@ -433,8 +433,10 @@ class ODM_Tree(object):
 
         self.openmvs_model = io.join_paths(self.openmvs, 'scene_dense.ply')
         self.openmvs_dense_scene = io.join_paths(self.openmvs, 'scene_dense.mvs')
-        self.openmvs_tex_scene = io.join_paths(self.openmvs, 'scene_dense_mesh.mvs')
-        self.openmvs_tex_model = io.join_paths(self.openmvs, 'scene_dense_mesh.obj')
+        self.openmvs_dense_mesh_model = io.join_paths(self.openmvs, 'scene_dense_mesh.ply')
+        self.openmvs_dense_mesh_scene = io.join_paths(self.openmvs, 'scene_dense_mesh.mvs')
+        self.openmvs_tex_model = io.join_paths(self.openmvs, 'scene_dense_mesh_texture.obj')
+    
 
 
         # pmvs

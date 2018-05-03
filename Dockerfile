@@ -53,7 +53,7 @@ RUN git clone https://github.com/cdcseacave/VCG.git /code/vcglib
 RUN apt-get install -y cmake libopencv-dev  \
 libatlas-base-dev libsuitesparse-dev
 RUN apt-get install -y qt-sdk libxmu-dev libxi-dev
-RUN  hg clone https://bitbucket.org/eigen/eigen/Source && mkdir eigen_build && cd eigen_build && cmake . ../Source && make && make install
+RUN  hg clone https://bitbucket.org/eigen/eigen/Source#3.2.9 Source && mkdir eigen_build && cd eigen_build && cmake . ../Source && make && make install
 RUN git clone https://ceres-solver.googlesource.com/ceres-solver ceres-solver && mkdir ceres_build && cd ceres_build \
 && cmake . ../ceres-solver/ -DMINIGLOG=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
 && make -j$(nproc) && make install 
