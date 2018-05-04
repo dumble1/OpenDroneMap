@@ -21,7 +21,7 @@ class ODMOpenMVSCell(ecto.Cell):
         # Benchmarking
         start_time = system.now_raw()
 
-        log.ODM_INFO('Running ODM OpenMVS Cell')
+        log.ODM_INFO('Running OpenMVS Cell')
 
         # get inputs
         args = self.inputs.args
@@ -62,7 +62,7 @@ class ODMOpenMVSCell(ecto.Cell):
         if not io.file_exists(tree.openmvs_tex_model) or rerun_cell:
             log.ODM_DEBUG('Texturing Mesh')
 
-            system.run('%s %s --export-type obj' % (context.openmvs_tex_path, tree.openmvs_dense_mesh_scene))
+            system.run('%s %s --export-type obj --resolution-level 2' % (context.openmvs_tex_path, tree.openmvs_dense_mesh_scene))
             system.run('chmod 744 %s' % tree.openmvs_tex_model)
 
         else:

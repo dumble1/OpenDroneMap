@@ -1,0 +1,12 @@
+{
+  "pipeline":[
+    "/code/odm_georeferencing/odm_georeferenced_model.las",
+    {
+      "filename":"/code/dem/dem_gray.tif",
+      "gdaldriver": "GTiff",
+      "resolution":0.1,
+      "output_type":"idw",
+      "type": "writers.gdal"
+    }
+  ]
+}

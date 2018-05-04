@@ -75,6 +75,8 @@ COPY /SuperBuild/CMakeLists.txt /code/SuperBuild/CMakeLists.txt
 COPY docker.settings.yaml /code/settings.yaml
 COPY VERSION /code/VERSION
 
+COPY las2dem.json /code/las2dem.json
+
 ###my code
 #COPY /my_code/ /code/my_code/
 

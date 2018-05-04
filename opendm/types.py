@@ -409,6 +409,7 @@ class ODM_Tree(object):
         self.odm_pdal = io.join_paths(self.root_path, 'pdal')
         #################
         self.openmvs = io.join_paths(self.root_path, 'openmvs')
+        self.dem = io.join_paths(self.root_path, 'dem')
 
         # important files paths
 
@@ -430,13 +431,19 @@ class ODM_Tree(object):
         
         #openmvs
         self.openmvs_scene = io.join_paths(self.openmvs, 'scene.mvs')
-
         self.openmvs_model = io.join_paths(self.openmvs, 'scene_dense.ply')
         self.openmvs_dense_scene = io.join_paths(self.openmvs, 'scene_dense.mvs')
         self.openmvs_dense_mesh_model = io.join_paths(self.openmvs, 'scene_dense_mesh.ply')
         self.openmvs_dense_mesh_scene = io.join_paths(self.openmvs, 'scene_dense_mesh.mvs')
         self.openmvs_tex_model = io.join_paths(self.openmvs, 'scene_dense_mesh_texture.obj')
-    
+        
+        #dem
+        self.dem_json = io.join_paths(self.root_path,'las2dem.json')
+        self.dem_gray = io.join_paths(self.dem, 'dem_gray.tif')
+        self.dem_shp = io.join_paths(self.odm_georeferencing, 'odm_georeferenced_model.bounds.shp')
+        self.dem_trim_gray = io.join_paths(self.dem, 'dem_gray_trim.tif')
+        self.dem_rgb = io.join_paths(self.dem,'dem_rgb.tif')
+        self.gray2rgb = io.join_paths(self.root_path, 'scripts/gray2rgb.py')
 
 
         # pmvs
