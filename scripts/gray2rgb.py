@@ -2,6 +2,7 @@ import rasterio
 import numpy as np
 import sys
 
+print (sys.argv[1])
 with rasterio.open(sys.argv[1]) as src:
     dem = src.read(1)
 #print (dem[1000:4000,2000])

@@ -12,6 +12,7 @@ RUN add-apt-repository -y ppa:george-edison55/cmake-3.x
 RUN apt-get update -y
 
 
+
 ###openMVS
 RUN apt-get update -y
 RUN apt-get install --fix-missing -y \
@@ -90,6 +91,10 @@ RUN git clone https://github.com/cdcseacave/openMVS.git /code/openMVS \
 
 RUN apt-get -y remove libgl1-mesa-dri git cmake python-pip build-essential
 RUN apt-get install -y libvtk6-dev
+
+###MY_DEM
+RUN  pip install rasterio
+
 ######my code
 #RUN cd my_code && make all && ls
 # Cleanup APT

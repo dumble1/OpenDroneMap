@@ -65,8 +65,10 @@ class ODMDEMCell(ecto.Cell):
                 rerun_cell:
                 
                 system.run('pdal pipeline %s' % (tree.dem_json))
-                system.run('gdalwarp -cutline %s -crop_to_cutline %s %s' % (tree.dem_shp, tree.dem_gray, tree.dem_trim_gray))
-                system.run('python %s %s %s'(tree.gray2rgb, tree.dem_trim_gray, dsm_output_filename))
+                if (not io.file_exists(tree.dem_trim_gray)): 
+                    system.run('gdalwarp -cutline %s -crop_to_cutline %s %s' % (tree.dem_shp, tree.dem_gray, tree.dem_trim_gray))
+                #print(tree.gray2rgb)
+                system.run('python %s %s %s' % (tree.gray2rgb, tree.dem_trim_gray, dsm_output_filename))
 
 
             else:
