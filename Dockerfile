@@ -110,5 +110,5 @@ RUN rm -rf /code/SuperBuild/download /code/SuperBuild/src/vtk7 /code/SuperBuild/
 
 # Entry point
 
-ENTRYPOINT ["python", "/code/run.py", "code"]
-#ENTRYPOINT ["/code/scripts/metadataset/run_all.sh", "/code/test"]
+#ENTRYPOINT ["python", "/code/run.py", "code"]
+ENTRYPOINT ["/code/scripts/metadataset/run_all.sh", "/code/test"]

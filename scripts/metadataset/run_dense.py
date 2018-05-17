@@ -50,11 +50,13 @@ class DenseReconstructor:
             os.symlink(aligned, main)
 
         path, name = os.path.split(submodel_path)
+
+        logger.info( "This is running on {} process.".format(os.getpid()))
         run_command(['python',
                      self.command,
                      '--project-path', path,
                      name,
-                     '--start-with', 'opensfm'])
+                     '--start-with', 'openmvs', '--use-openmvs'])
 
         logger.info("=======================================================")
         logger.info("Submodel {} reconstructed".format(submodel_path))
@@ -73,8 +75,8 @@ if __name__ == "__main__":
 
     submodel_paths = meta_data.get_submodel_paths()
     reconstructor = DenseReconstructor(command)
-
-    processes = 1
+    
+    processes = meta_data.config['processes']
     if processes == 1:
         for submodel_path in submodel_paths:
             reconstructor(submodel_path)

@@ -41,7 +41,10 @@ class Reconstructor:
         self._set_matching_done(submodel_path)
 
         run_command([self.command, 'create_tracks', submodel_path])
+        
         run_command([self.command, 'reconstruct', submodel_path])
+        run_command([self.command, 'undistort', submodel_path])
+        run_command([self.command, 'export_openmvs', submodel_path])
 
         logger.info("=======================================================")
         logger.info("Submodel {} reconstructed".format(submodel_path))

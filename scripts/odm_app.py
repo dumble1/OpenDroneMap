@@ -13,6 +13,8 @@ from odm_orthophoto import ODMOrthoPhotoCell
 from odm_dem import ODMDEMCell
 
 from openmvs import ODMOpenMVSCell
+from mvs_meshing import MVSMeshingCell
+from mvs_texturing import MVSTexturingCell
 
 
 class ODMApp(ecto.BlackBox):
@@ -47,6 +49,8 @@ class ODMApp(ecto.BlackBox):
                                            fixed_camera_params=p.args.use_fixed_camera_params,
                                            hybrid_bundle_adjustment=p.args.use_hybrid_bundle_adjustment),
                  'openmvs':ODMOpenMVSCell(),                ###OpenMVS
+                 'mvsmeshing':MVSMeshingCell(),
+                 'mvstexturing':MVSTexturingCell(),
                  'georeferencing': ODMGeoreferencingCell(gcp_file=p.args.gcp,
                                                          use_exif=p.args.use_exif,
                                                          verbose=p.args.verbose),
@@ -92,14 +96,22 @@ class ODMApp(ecto.BlackBox):
         connections += [self.tree[:] >> self.opensfm['tree'],
                         self.args[:] >> self.opensfm['args'],
                         self.dataset['reconstruction'] >> self.opensfm['reconstruction']]
-        # run openmvs
+        # run openmvs  and create dense point cloud
         connections += [self.tree[:] >> self.openmvs['tree'],
                         self.args[:] >> self.openmvs['args'],
                         self.opensfm['reconstruction'] >> self.openmvs['reconstruction']]
-        # create mesh and textured one from openmvs point cloud
+        # create mesh 
+        connections += [self.tree[:] >> self.mvsmeshing['tree'],
+                        self.args[:] >> self.mvsmeshing['args'],
+                        self.openmvs['reconstruction'] >> self.mvsmeshing['reconstruction']]
+        # create textured mesh
+        connections += [self.tree[:] >> self.mvstexturing['tree'],
+                        self.args[:] >> self.mvstexturing['args'],
+                        self.mvsmeshing['reconstruction'] >> self.mvstexturing['reconstruction']]
+        # georeferencing.
         connections += [self.tree[:] >> self.georeferencing['tree'],
                         self.args[:] >> self.georeferencing['args'],
-                        self.openmvs['reconstruction'] >> self.georeferencing['reconstruction']]
+                        self.mvstexturing['reconstruction'] >> self.georeferencing['reconstruction']]
         # create odm dem
         connections += [self.tree[:] >> self.dem['tree'],
                         self.args[:] >> self.dem['args'],

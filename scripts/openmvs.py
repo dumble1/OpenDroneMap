@@ -43,32 +43,12 @@ class ODMOpenMVSCell(ecto.Cell):
             copyfile(tree.opensfm_scene,
                      tree.openmvs_scene)
 
-            system.run('%s %s' % (context.openmvs_densify_path, tree.openmvs_scene))
+            system.run('%s %s --resolution-level 5 --min-resolution 1080' % (context.openmvs_densify_path, tree.openmvs_scene))
             system.run('chmod 744 %s' % tree.openmvs_model)
         else:
             log.ODM_WARNING('Found a valid OpenMVS file in: %s' %
                             tree.openmvs_model)
         
-        ###Reconstruct
-        if not io.file_exists(tree.openmvs_dense_mesh_model) or rerun_cell:
-            log.ODM_DEBUG('Reconstruct Mesh')
-            
-            system.run('%s %s' % (context.openmvs_meshing_path, tree.openmvs_dense_scene))
-            system.run('chmod 744 %s' % tree.openmvs_dense_mesh_model)
-        else:
-            log.ODM_WARNING('Found a valid file in: %s' % tree.openmvs_dense_mesh_model)
-        
-        ###Texturing
-        if not io.file_exists(tree.openmvs_tex_model) or rerun_cell:
-            log.ODM_DEBUG('Texturing Mesh')
-
-            system.run('%s %s --export-type obj --resolution-level 2' % (context.openmvs_tex_path, tree.openmvs_dense_mesh_scene))
-            system.run('chmod 744 %s' % tree.openmvs_tex_model)
-
-        else:
-            log.ODM_WARNING('Found a valid file in: %s' % tree.openmvs_tex_model)
-
-
 
         outputs.reconstruction = reconstruction
 

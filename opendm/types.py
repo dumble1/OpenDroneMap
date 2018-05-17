@@ -436,7 +436,9 @@ class ODM_Tree(object):
         self.openmvs_dense_mesh_model = io.join_paths(self.openmvs, 'scene_dense_mesh.ply')
         self.openmvs_dense_mesh_scene = io.join_paths(self.openmvs, 'scene_dense_mesh.mvs')
         self.openmvs_tex_model = io.join_paths(self.openmvs, 'scene_dense_mesh_texture.obj')
+        self.openmvs_tex_mtl = io.join_paths(self.openmvs, 'scene_dense_mesh_texture.mtl')
         
+
         #dem
         self.dem_json = io.join_paths(self.root_path,'las2dem.json')
         self.dem_gray = io.join_paths(self.dem, 'dem_gray.tif')
