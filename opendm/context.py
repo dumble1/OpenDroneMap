@@ -27,6 +27,8 @@ orb_slam2_path = os.path.join(superbuild_path, "src/orb_slam2")
 openmvs_densify_path = os.path.join(root_path, "openMVS_build/bin/DensifyPointCloud")
 openmvs_meshing_path = os.path.join(root_path, "openMVS_build/bin/ReconstructMesh")
 openmvs_tex_path = os.path.join(root_path, "openMVS_build/bin/TextureMesh")
+openmvs_json_path = os.path.join(root_path, "las2dem.json")
+openmvs_rgb_path = os.path.join(root_path, "scripts/gray2rgb.py")
 
 # define pmvs path
 cmvs_path = os.path.join(superbuild_path, "install/bin/cmvs")

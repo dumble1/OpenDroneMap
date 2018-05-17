@@ -64,11 +64,11 @@ class ODMDEMCell(ecto.Cell):
             if (not io.file_exists(dsm_output_filename)) or \
                 rerun_cell:
                 
-                system.run('pdal pipeline %s' % (tree.dem_json))
+                system.run('pdal pipeline %s' % (context.openmvs_json_path))
                 if (not io.file_exists(tree.dem_trim_gray)): 
                     system.run('gdalwarp -cutline %s -crop_to_cutline %s %s' % (tree.dem_shp, tree.dem_gray, tree.dem_trim_gray))
                 #print(tree.gray2rgb)
-                system.run('python %s %s %s' % (tree.gray2rgb, tree.dem_trim_gray, dsm_output_filename))
+                system.run('python %s %s %s' % (context.gray2rgb, tree.dem_trim_gray, dsm_output_filename))
 
 
             else:

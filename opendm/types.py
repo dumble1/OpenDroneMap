@@ -440,12 +440,12 @@ class ODM_Tree(object):
         
 
         #dem
-        self.dem_json = io.join_paths(self.root_path,'las2dem.json')
+        #self.dem_json = io.join_paths(self.root_path,'las2dem.json')
         self.dem_gray = io.join_paths(self.dem, 'dem_gray.tif')
         self.dem_shp = io.join_paths(self.odm_georeferencing, 'odm_georeferenced_model.bounds.shp')
         self.dem_trim_gray = io.join_paths(self.dem, 'dem_gray_trim.tif')
         self.dem_rgb = io.join_paths(self.dem,'dem_rgb.tif')
-        self.gray2rgb = io.join_paths(self.root_path, 'scripts/gray2rgb.py')
+        #self.gray2rgb = io.join_paths(self.root_path, 'scripts/gray2rgb.py')
 
 
         # pmvs
