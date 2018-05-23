@@ -75,6 +75,7 @@ if __name__ == "__main__":
         polygons = []
         for poly in shapely.ops.polygonize(lines):
             for point in submodel:
+                log.ODM_INFO("point [[2, 3]] is  %s " % (point[[2,3]]))
                 if poly.contains(Point(point[[2, 3]])):
                     polygons.append(poly)           # Todo: this is expensive
                     break

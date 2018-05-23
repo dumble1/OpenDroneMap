@@ -34,7 +34,7 @@ class MVSTexturingCell(ecto.Cell):
         if not io.file_exists(tree.openmvs_tex_model) or rerun_cell:
             log.ODM_DEBUG('Texturing Mesh')
 
-            system.run('%s %s --export-type obj --resolution-level 6 --min-resolution 640' % (context.openmvs_tex_path, tree.openmvs_dense_mesh_scene))
+            system.run('%s %s --export-type obj --resolution-level 3 --min-resolution 2040' % (context.openmvs_tex_path, tree.openmvs_dense_mesh_scene))
             system.run('chmod 744 %s' % tree.openmvs_tex_model)
 
         else:

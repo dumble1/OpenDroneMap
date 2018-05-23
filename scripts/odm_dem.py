@@ -61,10 +61,10 @@ class ODMDEMCell(ecto.Cell):
         if las_model_found:
             dsm_output_filename = os.path.join(odm_dem_root, 'outfile.tif')
 
-            if (not io.file_exists(dsm_output_filename)) or \
+            if False and (not io.file_exists(dsm_output_filename)) or \
                 rerun_cell:
                 
-                system.run('pdal pipeline %s' % (context.openmvs_json_path))
+                system.run('{"pipeline":["%s",{"filename":"/code/dem/dem_gray.tif","gdaldriver": "GTiff","resolution":0.1,"output_type":"idw","type": "writers.gdal"}]} | pdal pipeline -s' % (tree.odm_georeferencing_model_las) )
                 if (not io.file_exists(tree.dem_trim_gray)): 
                     system.run('gdalwarp -cutline %s -crop_to_cutline %s %s' % (tree.dem_shp, tree.dem_gray, tree.dem_trim_gray))
                 #print(tree.gray2rgb)

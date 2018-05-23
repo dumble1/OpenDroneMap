@@ -43,7 +43,7 @@ class ODMOpenMVSCell(ecto.Cell):
             copyfile(tree.opensfm_scene,
                      tree.openmvs_scene)
 
-            system.run('%s %s --resolution-level 5 --min-resolution 1080' % (context.openmvs_densify_path, tree.openmvs_scene))
+            system.run('%s %s --resolution-level 2 --min-resolution 2040' % (context.openmvs_densify_path, tree.openmvs_scene))
             system.run('chmod 744 %s' % tree.openmvs_model)
         else:
             log.ODM_WARNING('Found a valid OpenMVS file in: %s' %

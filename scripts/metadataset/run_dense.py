@@ -76,7 +76,8 @@ if __name__ == "__main__":
     submodel_paths = meta_data.get_submodel_paths()
     reconstructor = DenseReconstructor(command)
     
-    processes = meta_data.config['processes']
+    #processes = meta_data.config['processes']
+    processes =1
     if processes == 1:
         for submodel_path in submodel_paths:
             reconstructor(submodel_path)
