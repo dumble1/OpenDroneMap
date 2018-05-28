@@ -9,6 +9,7 @@ import subprocess
 from opensfm.large import metadataset
 
 from opendm import context
+from opendm import system
 
 logger = logging.getLogger(__name__)
 
@@ -52,11 +53,33 @@ class DenseReconstructor:
         path, name = os.path.split(submodel_path)
 
         logger.info( "This is running on {} process.".format(os.getpid()))
-        run_command(['python',
-                     self.command,
-                     '--project-path', path,
-                     name,
-                     '--start-with', 'openmvs', '--use-openmvs'])
+        
+        openmvs_submodel_path = os.path.join(submodel_path, 'openmvs')
+        sfm_scene = os.path.join(opensfm_submodel_path, 'openmvs/scene.mvs')
+        mvs_scene = os.path.join(openmvs_submodel_path, 'scene.mvs')
+        system.mkdir_p(openmvs_submodel_path) 
+
+        logger.info("copy file from {}".format(sfm_scene))
+        logger.info("copy file to {}".format(mvs_scene))
+        
+        from shutil import copyfile
+        copyfile(sfm_scene,
+                mvs_scene)
+        
+        if not os.path.isfile(mvs_scene):
+            logger.info( "No mvs_scene in {} process.".format(os.getpid()))
+            return 
+        else:
+            #system.run('%s %s --resolution-level 2 --max-threads 1 -v 3 --process-priority 1' % (context.openmvs_densify_path, mvs_scene))
+            run_command([context.openmvs_densify_path, mvs_scene,'--max-threads', 1 , '--process-priority', 1 ])
+            
+            if os.path.isfile(os.path.join(openmvs_submodel_path, 'scene_dense.ply')):
+                system.run('chmod 744 %s' % os.path.join(openmvs_submodel_path, 'scene_dense.ply'))
+        #run_command(['python',
+        #             self.command,
+        #               '--project-path', path,
+        #             name,
+        #             '--start-with', 'openmvs', '--use-openmvs'])
 
         logger.info("=======================================================")
         logger.info("Submodel {} reconstructed".format(submodel_path))
@@ -76,8 +99,9 @@ if __name__ == "__main__":
     submodel_paths = meta_data.get_submodel_paths()
     reconstructor = DenseReconstructor(command)
     
+    #processes = multiprocessing.cpu_count()
     #processes = meta_data.config['processes']
-    processes =1
+    processes = 1
     if processes == 1:
         for submodel_path in submodel_paths:
             reconstructor(submodel_path)
